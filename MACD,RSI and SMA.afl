@@ -1,5 +1,5 @@
 _SECTION_BEGIN("MACD,RSI,SMA")
-//Coded by Survesh @ Imperium Labs©
+//Coded by Survesh @ Imperium LabsÂ©
 /* 
 Statergy Courtesy : smstricks4u
 Statergy Explanation : 
@@ -55,7 +55,7 @@ SetOption("RefreshWhenCompleted",True)
 SetPositionSize(100,spsPercentOfEquity)
 SetOption( "AllowPositionShrinking",True)
 SetOption("MaxOpenPositions",5);
-PositionSize = -100000/5;
+PositionSize = 100000/5;
 SetChartOptions(0,chartShowArrows|chartShowDates)
 _N(Title = StrFormat("{{NAME}} - {{INTERVAL}} {{DATE}} Open %g, Hi %g, Lo %g, Close %g (%.1f%%) {{VALUES}}", O, H, L, C ));
 Plot( Close, "Price", colorWhite, styleCandle );

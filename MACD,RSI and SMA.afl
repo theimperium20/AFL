@@ -1,0 +1,80 @@
+_SECTION_BEGIN("MACD,RSI,SMA")
+//Coded by Survesh @ Imperium Labs©
+/* 
+Statergy Courtesy : smstricks4u
+Statergy Explanation : 
+USE THIS SETUP ON DAILY CHARTS
+
+MACD (12,26,9)
+RSI (14)
+20 DAYS SMA
+
+BUY ALERT
+
+PRICE SHOULD CLOSE ABOVE 20 DAYS SMA
+
+RSI SHOULD CROSS 50
+
+MACD MUST BE IN BUY MODE 
+
+WELL SOMETIMES
+
+PRICE WOULD HAVE CLOSED ABOVE 20 DAYS SMA
+
+RSI WOULD HAVE CROSSED 50
+
+BUT
+
+MACD STILL NOT GIVEN BUY SIGNAL
+
+IN SUCH SCENARIOS WAIT FOR MACD TO CROSS
+
+
+PRICE CLOSE ON FRIDAY JUST ABOVE 20 DAYS SMA
+
+RSI JUST CROSSES 50 MARK ON FRIDAY
+
+BUT 
+
+MACD STILL NOT GIVEN BUY CROSSOVER 
+
+ONE MAY BUY IN ADVANCE AT CROSS OF HIGH OF FRIDAY HIGH WITH STOP-LOSS AS 1% BELOW FRIDAY'S LOW
+
+IF MACD IN COMING DAYS GIVES BUY CROSS THEN SUPERB 
+
+ONCE U ENTER THE TRADE APPLY 20DSMA AS TRAILING STOPLOSS.. ONE CLOSE BELOW 20DSMA AND IMMEDIATE BREACH OF THIS CLOSING BAR LOW IS EXIT
+*/
+
+SetTradeDelays (0,0,0,0 )
+SetOption("InitialEquity", 100000)
+SetOption("MinShares",1)
+SetOption("CommissionMode",2)
+SetOption("CommissionAmount",20)
+SetOption("AccountMargin",100)
+SetOption("RefreshWhenCompleted",True)
+SetPositionSize(100,spsPercentOfEquity)
+SetOption( "AllowPositionShrinking",True)
+SetOption("MaxOpenPositions",5);
+PositionSize = -100000/5;
+SetChartOptions(0,chartShowArrows|chartShowDates)
+_N(Title = StrFormat("{{NAME}} - {{INTERVAL}} {{DATE}} Open %g, Hi %g, Lo %g, Close %g (%.1f%%) {{VALUES}}", O, H, L, C ));
+Plot( Close, "Price", colorWhite, styleCandle );
+NewDay = (Day()!= Ref(Day(), -1)) OR BarIndex() == 0;  
+Plot(NewDay,"",colorlightGrey,styleHistogram|styleDots|styleNoLabel|styleOwnScale);
+P1 = ParamField("Price field",-1);
+Periods1 = Param("Periods1",20 );
+Plot( MA( P1, Periods1 ), _DEFAULT_NAME(), ParamColor( "Color1", colorCycle ), ParamStyle("Style1") ); 
+Buy = Cross(MACD(12,26),Signal(12,26,9)) AND RSI(14)>50 AND Close > MA(Close,Periods1);
+Sell = P1 < Lowest(MA(Close,20)); 
+printf("\nBuy : " + Buy );  
+printf("\nSell : " + Sell );  
+
+/*Buy and Sell Signal Arrows On Charts */
+PlotShapes(IIf(Buy, shapeSquare, shapeNone),colorGreen, 0, L, Offset=-40);
+PlotShapes(IIf(Buy, shapeSquare, shapeNone),colorLime, 0,L, Offset=-50);
+PlotShapes(IIf(Sell, shapeSquare, shapeNone),colorRed, 0, H, Offset=40);
+PlotShapes(IIf(Sell, shapeSquare, shapeNone),colorOrange, 0,H, Offset=50);
+PlotShapes(IIf(Sell, shapeDownArrow, shapeNone),colorWhite, 0,H, Offset=-45);
+
+
+_SECTION_END();
